@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenWeather" Version="2.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="OpenWeather">
+      <HintPath>C:\Users\Envi\.nuget\packages\openweather\2.0.0\lib\net6.0\OpenWeather.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
