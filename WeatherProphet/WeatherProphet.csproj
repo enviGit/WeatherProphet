@@ -8,13 +8,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenWeather" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="Microsoft.Extensions.Configuration">
+      <HintPath>C:\Users\Envi\.nuget\packages\microsoft.extensions.configuration\7.0.0\lib\net6.0\Microsoft.Extensions.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.Configuration.Json">
+      <HintPath>C:\Users\Envi\.nuget\packages\microsoft.extensions.configuration.json\7.0.0\lib\net6.0\Microsoft.Extensions.Configuration.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>C:\Users\Envi\.nuget\packages\newtonsoft.json\13.0.2\lib\net6.0\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="OpenWeather">
       <HintPath>C:\Users\Envi\.nuget\packages\openweather\2.0.0\lib\net6.0\OpenWeather.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

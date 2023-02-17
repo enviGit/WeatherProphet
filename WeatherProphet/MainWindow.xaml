@@ -7,8 +7,21 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="141,120,0,0" TextWrapping="Wrap" Text="Location" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Display" HorizontalAlignment="Left" Margin="386,129,0,0" VerticalAlignment="Top" Width="46"/>
-        <TextBlock HorizontalAlignment="Left" Margin="290,262,0,0" TextWrapping="Wrap" Text="Weather data" VerticalAlignment="Top"/>
+        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Display" HorizontalAlignment="Left" Margin="592,114,0,0" VerticalAlignment="Top" Width="46" Click="Button_Click"/>
+        <TextBlock Name="textBlockWeather" TextWrapping="Wrap" Text="" Margin="10,179,10,217"/>
+        <TextBlock Name="textBlockForecast" TextWrapping="Wrap" Text="" Margin="10,222,10,174"/>
+        <ListBox Name="listBoxForecast" Visibility="Visible" Margin="10,222,10,10">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding ImageUrl}" Width="50" Height="50"/>
+                        <TextBlock Text="{Binding DayOfWeek}" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Weather}"/>
+                        <TextBlock Text="{Binding Temperature, StringFormat='{}{0:F1}°C'}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
     </Grid>
 </Window>
