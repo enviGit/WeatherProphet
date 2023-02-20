@@ -37,4 +37,4 @@ Contributions are welcome! To contribute to the project, follow these steps:
 5. Create a pull request to merge your changes into the main repository.
 
 ## License
-This project is licensed under the Creative Commons License. See the [LICENSE](LICENSE.md) file for more information.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more information.
