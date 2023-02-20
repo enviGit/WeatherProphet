@@ -1,13 +1,14 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 
 #nullable disable
 
@@ -24,38 +25,49 @@ namespace WeatherProphet
             IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
             apiKey = config["OpenWeatherApiKey"];
             httpClient = new HttpClient();
+            comboBoxDaysToShow.SelectionChanged += ComboBoxDaysToShow_SelectionChanged;
         }
-        private async Task<List<WeatherForecast>> GetWeatherForecasts(string city, int numDays)
+        private async Task<List<WeatherForecast>> GetWeatherForecasts(string city)
         {
-            string forecastUrl = $"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric";
-
-            try
+            if (comboBoxDaysToShow.SelectedItem != null)
             {
-                HttpResponseMessage forecastResponse = await httpClient.GetAsync(forecastUrl);
-                forecastResponse.EnsureSuccessStatusCode();
-                string forecastResponseBody = await forecastResponse.Content.ReadAsStringAsync();
-                dynamic forecastResult = JsonConvert.DeserializeObject(forecastResponseBody);
-                List<WeatherForecast> forecasts = new List<WeatherForecast>();
+                int numDays = Convert.ToInt32(((ComboBoxItem)comboBoxDaysToShow.SelectedItem).Content);
+                string forecastUrl = $"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric";
 
-                for (int i = 0; i < numDays; i++)
+                try
                 {
-                    DateTime date = forecastResult.list[i].dt_txt;
-                    string weather = forecastResult.list[i].weather[0].description;
-                    double temperature = forecastResult.list[i].main.temp;
-                    string imageUrl = $"http://openweathermap.org/img/w/{forecastResult.list[i].weather[0].icon}.png";
+                    HttpResponseMessage forecastResponse = await httpClient.GetAsync(forecastUrl);
+                    forecastResponse.EnsureSuccessStatusCode();
+                    string forecastResponseBody = await forecastResponse.Content.ReadAsStringAsync();
+                    dynamic forecastResult = JsonConvert.DeserializeObject(forecastResponseBody);
+                    JArray forecastList = (JArray)forecastResult.list;
+                    List<WeatherForecast> forecasts = new List<WeatherForecast>();
 
+                    foreach (var group in forecastList.GroupBy(x => ((DateTime)x["dt_txt"]).Date).Skip(1).Take(numDays))
+                    {
+                        var item = group.FirstOrDefault(x => ((DateTime)x["dt_txt"]).Hour == 12);
 
-                    forecasts.Add(new WeatherForecast(date, weather, temperature, imageUrl));
+                        if (item == null) 
+                            continue;
+
+                        DateTime date = item["dt_txt"].ToObject<DateTime>();
+                        string weather = item["weather"][0]["description"].ToString();
+                        double temperature = item["main"]["temp"].ToObject<double>();
+                        string imageUrl = $"http://openweathermap.org/img/w/{item["weather"][0]["icon"].ToString()}.png";
+                        forecasts.Add(new WeatherForecast(date, weather, temperature, imageUrl));
+                    }
+
+                    return forecasts;
                 }
+                catch (HttpRequestException ex)
+                {
+                    textBlockWeather.Text = $"Error: {ex.Message}";
 
-                return forecasts;
+                    return null;
+                }
             }
-            catch (HttpRequestException ex)
-            {
-                textBlockWeather.Text = $"Error: {ex.Message}";
 
-                return null;
-            }
+            return new List<WeatherForecast>();
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -83,9 +95,9 @@ namespace WeatherProphet
                     string forecastResponseBody = await forecastResponse.Content.ReadAsStringAsync();
                     dynamic forecastResult = JsonConvert.DeserializeObject(forecastResponseBody);
                     var dailyForecasts = ((IEnumerable<dynamic>)forecastResult.list).Where(x => DateTime.Parse(x.dt_txt.ToString()).TimeOfDay == TimeSpan.FromHours(12)).ToList();
-                    List <WeatherForecast> forecasts = new List<WeatherForecast>();
+                    List<WeatherForecast> forecasts = new List<WeatherForecast>();
 
-                    foreach(var item in dailyForecasts)
+                    foreach (var item in dailyForecasts)
                     {
                         DateTime date = item.dt_txt;
                         string forecastWeather = item.weather[0].description;
@@ -111,6 +123,26 @@ namespace WeatherProphet
             {
                 textBlockWeather.Text = $"Error: {ex.Message}";
                 listBoxForecast.Visibility = Visibility.Collapsed;
+            }
+        }
+        private async void ComboBoxDaysToShow_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!string.IsNullOrEmpty(textBoxCity?.Text))
+            {
+                var forecasts = await GetWeatherForecasts(textBoxCity.Text);
+
+                if (forecasts != null && forecasts.Count > 0)
+                {
+                    listBoxForecast.ItemsSource = forecasts;
+                    listBoxForecast.Visibility = Visibility.Visible;
+                    textBlockForecast.Visibility = Visibility.Collapsed;
+                }
+                else
+                {
+                    listBoxForecast.Visibility = Visibility.Collapsed;
+                    textBlockForecast.Text = "No forecast available.";
+                    textBlockForecast.Visibility = Visibility.Visible;
+                }
             }
         }
     }
