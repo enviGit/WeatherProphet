@@ -6,6 +6,7 @@ Weather Prophet is a desktop application that allows users to check the current 
 - Check the current weather for a city
 - Check the weather forecast for the next few days for a city
 - View the temperature, weather conditions, and an icon for each forecast
+- Customize the number of days to show in the forecast
 - Error handling for invalid inputs and API errors
 
 ## Requirements
@@ -19,7 +20,8 @@ To be continued...
 1. Enter the name of a city in the text box at the top of the window.
 2. Click the "Get Weather" button to retrieve the current weather and the weather forecast for the next few days for that city.
 3. View the current weather information and the weather forecast in the list box below.
-4. If an error occurs, such as an invalid city name or an API error, an error message will be displayed in the text box below.
+4. To customize the number of days to show in the forecast, use the "Days to show" drop-down menu at the top of the window.
+5. If an error occurs, such as an invalid city name or an API error, an error message will be displayed in the text box below.
 
 ## Development
 To build and run the project locally, follow these steps:
