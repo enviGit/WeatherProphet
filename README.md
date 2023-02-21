@@ -14,7 +14,9 @@ Weather Prophet is a desktop application that allows users to check the current 
 - .NET Core 3.1 or later
 
 ## Installation
-To be continued...
+1. Download the latest release of Weather Prophet from the [releases](https://github.com/enviGit/WeatherProphet/releases) page.
+2. Extract the downloaded ZIP file to a folder on your computer.
+3. Run the WeatherProphet.exe file.
 
 ## Usage
 1. Enter the name of a city in the text box at the top of the window.
