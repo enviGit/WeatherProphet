@@ -6,14 +6,21 @@
         xmlns:local="clr-namespace:WeatherProphet"
         mc:Ignorable="d"
         Title="Weather Prophet" Height="450" Width="800">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
     <Grid>
         <Label Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Background="#007ACC" Foreground="White"/>
-        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,114,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="4" SelectionChanged="ComboBoxDaysToShow_SelectionChanged">
+        <!--<Button Content="Toggle Theme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="348,47,348,0"/>-->
+        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,114,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="3">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
             <ComboBoxItem Content="4"/>
-            <ComboBoxItem Content="5"/>
         </ComboBox>
         <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Button Content="Get Weather" HorizontalAlignment="Left" Margin="562,114,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>

@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 #nullable disable
 
@@ -25,13 +26,36 @@ namespace WeatherProphet
             IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
             apiKey = config["OpenWeatherApiKey"];
             httpClient = new HttpClient();
-            comboBoxDaysToShow.SelectionChanged += ComboBoxDaysToShow_SelectionChanged;
         }
-        private async Task<List<WeatherForecast>> GetWeatherForecasts(string city)
+        private async Task GetWeather(string city)
         {
-            if (comboBoxDaysToShow.SelectedItem != null)
+            string weatherUrl = $"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric";
+
+            try
             {
-                int numDays = Convert.ToInt32(((ComboBoxItem)comboBoxDaysToShow.SelectedItem).Content);
+                HttpResponseMessage weatherResponse = await httpClient.GetAsync(weatherUrl);
+                weatherResponse.EnsureSuccessStatusCode();
+                string weatherResponseBody = await weatherResponse.Content.ReadAsStringAsync();
+                dynamic weatherResult = JsonConvert.DeserializeObject(weatherResponseBody);
+                string weather = weatherResult.weather[0].description;
+                double temperature = Math.Round((double)weatherResult.main.temp, 1);
+                string temperatureString = temperature.ToString("0.0", CultureInfo.InvariantCulture);
+
+                if (weather != null && temperature != null)
+                    textBlockWeather.Text = $"Current weather in {city}: {weather}, {temperatureString}°C";
+
+
+            }
+            catch (HttpRequestException ex)
+            {
+                textBlockWeather.Text = $"Error: {ex.Message}";
+                listBoxForecast.Visibility = Visibility.Collapsed;
+            }
+        }
+        private async Task<List<WeatherForecast>> GetWeatherForecasts(string city, int numDays, bool useSelectedValue = true)
+        {
+            if (useSelectedValue && comboBoxDaysToShow.SelectedItem != null)
+            {
                 string forecastUrl = $"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric";
 
                 try
@@ -47,7 +71,7 @@ namespace WeatherProphet
                     {
                         var item = group.FirstOrDefault(x => ((DateTime)x["dt_txt"]).Hour == 12);
 
-                        if (item == null) 
+                        if (item == null)
                             continue;
 
                         DateTime date = item["dt_txt"].ToObject<DateTime>();
@@ -61,7 +85,7 @@ namespace WeatherProphet
                 }
                 catch (HttpRequestException ex)
                 {
-                    textBlockWeather.Text = $"Error: {ex.Message}";
+                    textBlockForecast.Text = $"Error: {ex.Message}";
 
                     return null;
                 }
@@ -71,51 +95,28 @@ namespace WeatherProphet
         }
         private async void Button_Click(object sender, RoutedEventArgs e)
         {
-
             string city = textBoxCity.Text;
-            string weatherUrl = $"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={apiKey}&units=metric";
-            string forecastUrl = $"http://api.openweathermap.org/data/2.5/forecast?q={city}&appid={apiKey}&units=metric";
 
             try
             {
-                HttpResponseMessage weatherResponse = await httpClient.GetAsync(weatherUrl);
-                weatherResponse.EnsureSuccessStatusCode();
-                string weatherResponseBody = await weatherResponse.Content.ReadAsStringAsync();
-                dynamic weatherResult = JsonConvert.DeserializeObject(weatherResponseBody);
-                string weather = weatherResult?.weather?[0]?.description;
-                double temperature = Math.Round((double)weatherResult.main.temp, 1);
-                string temperatureString = temperature.ToString("0.0", CultureInfo.InvariantCulture);
+                await GetWeather(city);
 
-                if (weather != null && temperature != null)
+                if (comboBoxDaysToShow.SelectedItem != null)
                 {
-                    textBlockWeather.Text = $"Current weather in {city}: {weather}, {temperatureString}°C";
+                    int numDays = Convert.ToInt32(((ComboBoxItem)comboBoxDaysToShow.SelectedItem).Content);
+                    var forecasts = await GetWeatherForecasts(city, numDays);
 
-                    HttpResponseMessage forecastResponse = await httpClient.GetAsync(forecastUrl);
-                    forecastResponse.EnsureSuccessStatusCode();
-                    string forecastResponseBody = await forecastResponse.Content.ReadAsStringAsync();
-                    dynamic forecastResult = JsonConvert.DeserializeObject(forecastResponseBody);
-                    var dailyForecasts = ((IEnumerable<dynamic>)forecastResult.list).Where(x => DateTime.Parse(x.dt_txt.ToString()).TimeOfDay == TimeSpan.FromHours(12)).ToList();
-                    List<WeatherForecast> forecasts = new List<WeatherForecast>();
-
-                    foreach (var item in dailyForecasts)
-                    {
-                        DateTime date = item.dt_txt;
-                        string forecastWeather = item.weather[0].description;
-                        double forecastTemperature = item.main.temp;
-                        string imageUrl = $"http://openweathermap.org/img/w/{item.weather[0].icon}.png";
-                        forecasts.Add(new WeatherForecast(date, forecastWeather, forecastTemperature, imageUrl));
-                    }
-
-                    if (forecasts != null && forecasts.Any())
+                    if (forecasts != null && forecasts.Count > 0)
                     {
                         listBoxForecast.ItemsSource = forecasts;
                         listBoxForecast.Visibility = Visibility.Visible;
-                        textBlockForecast.Text = string.Empty;
+                        textBlockForecast.Visibility = Visibility.Collapsed;
                     }
                     else
                     {
-                        textBlockForecast.Text = "Weather forecast not available.";
                         listBoxForecast.Visibility = Visibility.Collapsed;
+                        textBlockForecast.Text = "No forecast available.";
+                        textBlockForecast.Visibility = Visibility.Visible;
                     }
                 }
             }
@@ -125,24 +126,14 @@ namespace WeatherProphet
                 listBoxForecast.Visibility = Visibility.Collapsed;
             }
         }
-        private async void ComboBoxDaysToShow_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void Button_ToggleTheme(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrEmpty(textBoxCity?.Text))
+            if (Resources.MergedDictionaries.Count > 0 && Resources.MergedDictionaries[0].Source.OriginalString == "Themes/DarkTheme.xaml")
+                Resources.MergedDictionaries.Clear();
+            else
             {
-                var forecasts = await GetWeatherForecasts(textBoxCity.Text);
-
-                if (forecasts != null && forecasts.Count > 0)
-                {
-                    listBoxForecast.ItemsSource = forecasts;
-                    listBoxForecast.Visibility = Visibility.Visible;
-                    textBlockForecast.Visibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    listBoxForecast.Visibility = Visibility.Collapsed;
-                    textBlockForecast.Text = "No forecast available.";
-                    textBlockForecast.Visibility = Visibility.Visible;
-                }
+                Resources.MergedDictionaries.Clear();
+                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) });
             }
         }
     }
