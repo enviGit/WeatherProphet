@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 #nullable disable
 
@@ -129,10 +130,15 @@ namespace WeatherProphet
         private void Button_ToggleTheme(object sender, RoutedEventArgs e)
         {
             if (Resources.MergedDictionaries.Count > 0 && Resources.MergedDictionaries[0].Source.OriginalString == "Themes/DarkTheme.xaml")
+            {
                 Resources.MergedDictionaries.Clear();
+                ThemeImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Icons/light.png"));
+                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/LightTheme.xaml", UriKind.Relative) });
+            }
             else
             {
                 Resources.MergedDictionaries.Clear();
+                ThemeImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Icons/dark.png"));
                 Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) });
             }
         }

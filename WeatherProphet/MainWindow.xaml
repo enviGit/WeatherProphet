@@ -14,15 +14,19 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Label Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Top" Background="#007ACC" Foreground="White"/>
-        <!--<Button Content="Toggle Theme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="348,47,348,0"/>-->
-        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,114,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="3">
+        <Label Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
+        <Button Name="ToggleTheme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="0,9,10,0" Style="{StaticResource ThemeButton}" Height="28" Width="67" HorizontalAlignment="Right">
+            <Button.Background>
+                <ImageBrush x:Name="ThemeImage" ImageSource="pack://application:,,,/Icons/dark.png"/>
+            </Button.Background>
+        </Button>
+        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,115,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="3" Height="28">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
             <ComboBoxItem Content="4"/>
         </ComboBox>
-        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
         <Button Content="Get Weather" HorizontalAlignment="Left" Margin="562,114,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
         <TextBlock Name="textBlockWeather" TextWrapping="Wrap" Text="" Margin="10,179,10,217"/>
         <TextBlock Name="textBlockForecast" TextWrapping="Wrap" Text="" Margin="10,222,10,174"/>

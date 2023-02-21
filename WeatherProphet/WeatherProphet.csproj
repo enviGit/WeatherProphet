@@ -8,6 +8,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\dark.png" />
+    <None Remove="Icons\light.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
@@ -30,6 +35,11 @@
     <Reference Include="OpenWeather">
       <HintPath>C:\Users\Envi\.nuget\packages\openweather\2.0.0\lib\net6.0\OpenWeather.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Icons\dark.png" />
+    <Resource Include="Icons\light.png" />
   </ItemGroup>
 
   <ItemGroup>
