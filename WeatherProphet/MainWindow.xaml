@@ -14,23 +14,39 @@
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
-        <Label Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Top"/>
-        <Button Name="ToggleTheme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="0,9,10,0" Style="{StaticResource ThemeButton}" Height="28" Width="67" HorizontalAlignment="Right">
+        <Label x:Name="labelWeatherProphet" Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
+               VerticalContentAlignment="Top"/>
+        <ComboBox Name="comboBoxLanguageToDisplay" VerticalAlignment="Top" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" 
+                  Margin="10,62,618,0" Height="28" SelectionChanged="ComboBoxLanguageToDisplay_SelectionChanged">
+            <ComboBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Width="16" Height="16" Margin="0,0,5,0" Source="{Binding FlagIcon}" />
+                        <TextBlock Text="{Binding DisplayName}" />
+                    </StackPanel>
+                </DataTemplate>
+            </ComboBox.ItemTemplate>
+        </ComboBox>
+        <Button Name="ToggleTheme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="0,13,10,0" Style="{StaticResource ThemeButton}" HorizontalAlignment="Right" Width="40">
             <Button.Background>
                 <ImageBrush x:Name="ThemeImage" ImageSource="pack://application:,,,/Icons/dark.png"/>
             </Button.Background>
         </Button>
-        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,115,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,115,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="3" Height="28">
+        <Label x:Name="labelCity" Content="City" HorizontalAlignment="Left" Margin="147,97,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="120" 
+               Height="27" BorderThickness="0"/>
+        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="147,124,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="labelForecastsNumber" Content="Number of forecasts" HorizontalAlignment="Left" Margin="274,97,0,0" VerticalAlignment="Top"  HorizontalContentAlignment="Center" Width="118" Height="27" 
+               BorderThickness="0"/>
+        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="293,124,0,0" VerticalAlignment="Top" Width="80" SelectedIndex="3" Height="28">
             <ComboBoxItem Content="1"/>
             <ComboBoxItem Content="2"/>
             <ComboBoxItem Content="3"/>
             <ComboBoxItem Content="4"/>
         </ComboBox>
-        <Button Content="Get Weather" HorizontalAlignment="Left" Margin="562,114,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
-        <TextBlock Name="textBlockWeather" TextWrapping="Wrap" Text="" Margin="10,179,10,217"/>
+        <Button Name="buttonGetWeather" Content="Get Weather" HorizontalAlignment="Left" Margin="562,123,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click"/>
+        <TextBlock Name="textBlockWeather" TextWrapping="Wrap" Text="" Margin="10,179,10,212"/>
         <TextBlock Name="textBlockForecast" TextWrapping="Wrap" Text="" Margin="10,222,10,174"/>
-        <ListBox Name="listBoxForecast" Visibility="Visible" Margin="10,222,10,10">
+        <ListBox Name="listBoxForecast" Visibility="Collapsed" Margin="10,222,10,10">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">

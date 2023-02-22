@@ -8,8 +8,53 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Icons\Afrikaans.png" />
+    <None Remove="Icons\Albanian.png" />
+    <None Remove="Icons\Arabic.png" />
+    <None Remove="Icons\Azerbaijani.png" />
+    <None Remove="Icons\Basque.png" />
+    <None Remove="Icons\Bulgarian.png" />
+    <None Remove="Icons\Catalan.png" />
+    <None Remove="Icons\Chinese.png" />
+    <None Remove="Icons\Croatian.png" />
+    <None Remove="Icons\Czech.png" />
+    <None Remove="Icons\Danish.png" />
     <None Remove="Icons\dark.png" />
+    <None Remove="Icons\dark2.png" />
+    <None Remove="Icons\Dutch.png" />
+    <None Remove="Icons\English.png" />
+    <None Remove="Icons\Finnish.png" />
+    <None Remove="Icons\French.png" />
+    <None Remove="Icons\Galician.png" />
+    <None Remove="Icons\German.png" />
+    <None Remove="Icons\Greek.png" />
+    <None Remove="Icons\Hebrew.png" />
+    <None Remove="Icons\Hindi.png" />
+    <None Remove="Icons\Hungarian.png" />
+    <None Remove="Icons\Indonesian.png" />
+    <None Remove="Icons\Italian.png" />
+    <None Remove="Icons\Japanese.png" />
+    <None Remove="Icons\Korean.png" />
+    <None Remove="Icons\Latvian.png" />
     <None Remove="Icons\light.png" />
+    <None Remove="Icons\Lithuanian.png" />
+    <None Remove="Icons\Macedonian.png" />
+    <None Remove="Icons\Norwegian.png" />
+    <None Remove="Icons\Persian.png" />
+    <None Remove="Icons\Polish.png" />
+    <None Remove="Icons\PortuguesBr.png" />
+    <None Remove="Icons\Portuguese.png" />
+    <None Remove="Icons\Romanian.png" />
+    <None Remove="Icons\Russian.png" />
+    <None Remove="Icons\Serbian.png" />
+    <None Remove="Icons\Slovak.png" />
+    <None Remove="Icons\Slovenian.png" />
+    <None Remove="Icons\Spanish.png" />
+    <None Remove="Icons\Swedish.png" />
+    <None Remove="Icons\Thai.png" />
+    <None Remove="Icons\Turkish.png" />
+    <None Remove="Icons\Ukrainian.png" />
+    <None Remove="Icons\Vietnamese.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,8 +80,52 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Icons\Afrikaans.png" />
+    <Resource Include="Icons\Albanian.png" />
+    <Resource Include="Icons\Arabic.png" />
+    <Resource Include="Icons\Azerbaijani.png" />
+    <Resource Include="Icons\Basque.png" />
+    <Resource Include="Icons\Bulgarian.png" />
+    <Resource Include="Icons\Catalan.png" />
+    <Resource Include="Icons\Chinese.png" />
+    <Resource Include="Icons\Croatian.png" />
+    <Resource Include="Icons\Czech.png" />
+    <Resource Include="Icons\Danish.png" />
     <Resource Include="Icons\dark.png" />
+    <Resource Include="Icons\Dutch.png" />
+    <Resource Include="Icons\English.png" />
+    <Resource Include="Icons\Finnish.png" />
+    <Resource Include="Icons\French.png" />
+    <Resource Include="Icons\Galician.png" />
+    <Resource Include="Icons\German.png" />
+    <Resource Include="Icons\Greek.png" />
+    <Resource Include="Icons\Hebrew.png" />
+    <Resource Include="Icons\Hindi.png" />
+    <Resource Include="Icons\Hungarian.png" />
+    <Resource Include="Icons\Indonesian.png" />
+    <Resource Include="Icons\Italian.png" />
+    <Resource Include="Icons\Japanese.png" />
+    <Resource Include="Icons\Korean.png" />
+    <Resource Include="Icons\Latvian.png" />
     <Resource Include="Icons\light.png" />
+    <Resource Include="Icons\Lithuanian.png" />
+    <Resource Include="Icons\Macedonian.png" />
+    <Resource Include="Icons\Norwegian.png" />
+    <Resource Include="Icons\Persian.png" />
+    <Resource Include="Icons\Polish.png" />
+    <Resource Include="Icons\PortuguesBr.png" />
+    <Resource Include="Icons\Portuguese.png" />
+    <Resource Include="Icons\Romanian.png" />
+    <Resource Include="Icons\Russian.png" />
+    <Resource Include="Icons\Serbian.png" />
+    <Resource Include="Icons\Slovak.png" />
+    <Resource Include="Icons\Slovenian.png" />
+    <Resource Include="Icons\Spanish.png" />
+    <Resource Include="Icons\Swedish.png" />
+    <Resource Include="Icons\Thai.png" />
+    <Resource Include="Icons\Turkish.png" />
+    <Resource Include="Icons\Ukrainian.png" />
+    <Resource Include="Icons\Vietnamese.png" />
   </ItemGroup>
 
   <ItemGroup>
