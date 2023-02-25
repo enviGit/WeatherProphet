@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Net.Http;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -126,7 +125,13 @@ namespace WeatherProphet
             AvailableLanguages.Add(new Language("Zulu", "/Icons/Afrikaans.png"));
             SelectedLanguage = AvailableLanguages.FirstOrDefault(lang => lang.DisplayName == "English");
             DataContext = this;
+            comboBoxDaysToShow.Items.Clear();
+            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "1" });
+            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "2" });
+            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "3" });
+            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "4" });
         }
+
         private async Task GetWeather(string city, string language)
         {
             try
@@ -182,7 +187,7 @@ namespace WeatherProphet
                         string weather = item["weather"][0]["description"].ToString();
                         double temperature = item["main"]["temp"].ToObject<double>();
                         string imageUrl = $"http://openweathermap.org/img/w/{item["weather"][0]["icon"].ToString()}.png";
-                        forecasts.Add(new WeatherForecast(date, weather, temperature, imageUrl));
+                        forecasts.Add(new WeatherForecast(date, weather, temperature, imageUrl, langCode));
                     }
 
                     return forecasts;
@@ -248,6 +253,8 @@ namespace WeatherProphet
 
         private void ComboBoxLanguageToDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            //SelectedLanguage = (Language)comboBoxLanguageToDisplay.SelectedItem;
+
             switch (SelectedLanguage.DisplayName)
             {
                 case "Afrikaans":
@@ -580,6 +587,16 @@ namespace WeatherProphet
                     buttonGetWeather.Content = "Get Weather";
                     break;
             }
+
+            //TranslateDisplayNames(langCode);
         }
+        /*private void TranslateDisplayNames(string langCode)
+        {
+            foreach (var language in AvailableLanguages)
+            {
+                var cultureInfo = new CultureInfo(langCode);
+                language.DisplayName = cultureInfo.NativeName;
+            }
+        }*/
     }
 }
