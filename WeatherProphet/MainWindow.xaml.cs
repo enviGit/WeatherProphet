@@ -19,7 +19,6 @@ namespace WeatherProphet
     {
         private readonly string apiKey;
         private readonly HttpClient httpClient;
-        public List<Language> AvailableLanguages { get; set; }
         public Language SelectedLanguage { get; set; }
         private string langCode = "en";
         private Dictionary<string, string> weatherPhrases = new Dictionary<string, string> {
@@ -76,60 +75,13 @@ namespace WeatherProphet
             IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
             apiKey = config["OpenWeatherApiKey"];
             httpClient = new HttpClient();
-            AvailableLanguages = new List<Language>();
-            AvailableLanguages.Add(new Language("Afrikaans", "/Icons/Afrikaans.png"));
-            AvailableLanguages.Add(new Language("Albanian", "/Icons/Albanian.png"));
-            AvailableLanguages.Add(new Language("Arabic", "/Icons/Arabic.png"));
-            AvailableLanguages.Add(new Language("Azerbaijani", "/Icons/Azerbaijani.png"));
-            AvailableLanguages.Add(new Language("Basque", "/Icons/Basque.png"));
-            AvailableLanguages.Add(new Language("Bulgarian", "/Icons/Bulgarian.png"));
-            AvailableLanguages.Add(new Language("Catalan", "/Icons/Catalan.png"));
-            AvailableLanguages.Add(new Language("Chinese Simplified", "/Icons/Chinese.png"));
-            AvailableLanguages.Add(new Language("Chinese Traditional", "/Icons/Chinese.png"));
-            AvailableLanguages.Add(new Language("Croatian", "/Icons/Croatian.png"));
-            AvailableLanguages.Add(new Language("Czech", "/Icons/Czech.png"));
-            AvailableLanguages.Add(new Language("Danish", "/Icons/Danish.png"));
-            AvailableLanguages.Add(new Language("Dutch", "/Icons/Dutch.png"));
-            AvailableLanguages.Add(new Language("English", "/Icons/English.png"));
-            AvailableLanguages.Add(new Language("Finnish", "/Icons/Finnish.png"));
-            AvailableLanguages.Add(new Language("French", "/Icons/French.png"));
-            AvailableLanguages.Add(new Language("Galician", "/Icons/Galician.png"));
-            AvailableLanguages.Add(new Language("German", "/Icons/German.png"));
-            AvailableLanguages.Add(new Language("Greek", "/Icons/Greek.png"));
-            AvailableLanguages.Add(new Language("Hebrew", "/Icons/Hebrew.png"));
-            AvailableLanguages.Add(new Language("Hindi", "/Icons/Hindi.png"));
-            AvailableLanguages.Add(new Language("Hungarian", "/Icons/Hungarian.png"));
-            AvailableLanguages.Add(new Language("Indonesian", "/Icons/Indonesian.png"));
-            AvailableLanguages.Add(new Language("Italian", "/Icons/Italian.png"));
-            AvailableLanguages.Add(new Language("Japanese", "/Icons/Japanese.png"));
-            AvailableLanguages.Add(new Language("Korean", "/Icons/Korean.png"));
-            AvailableLanguages.Add(new Language("Latvian", "/Icons/Latvian.png"));
-            AvailableLanguages.Add(new Language("Lithuanian", "/Icons/Lithuanian.png"));
-            AvailableLanguages.Add(new Language("Macedonian", "/Icons/Macedonian.png"));
-            AvailableLanguages.Add(new Language("Norwegian", "/Icons/Norwegian.png"));
-            AvailableLanguages.Add(new Language("Persian (Farsi)", "/Icons/Persian.png"));
-            AvailableLanguages.Add(new Language("Polish", "/Icons/Polish.png"));
-            AvailableLanguages.Add(new Language("Portuguese", "/Icons/Portuguese.png"));
-            AvailableLanguages.Add(new Language("Português Brasil", "/Icons/PortuguesBr.png"));
-            AvailableLanguages.Add(new Language("Romanian", "/Icons/Romanian.png"));
-            AvailableLanguages.Add(new Language("Russian", "/Icons/Russian.png"));
-            AvailableLanguages.Add(new Language("Serbian", "/Icons/Serbian.png"));
-            AvailableLanguages.Add(new Language("Slovak", "/Icons/Slovak.png"));
-            AvailableLanguages.Add(new Language("Slovenian", "/Icons/Slovenian.png"));
-            AvailableLanguages.Add(new Language("Spanish", "/Icons/Spanish.png"));
-            AvailableLanguages.Add(new Language("Swedish", "/Icons/Swedish.png"));
-            AvailableLanguages.Add(new Language("Thai", "/Icons/Thai.png"));
-            AvailableLanguages.Add(new Language("Turkish", "/Icons/Turkish.png"));
-            AvailableLanguages.Add(new Language("Ukrainian", "/Icons/Ukrainian.png"));
-            AvailableLanguages.Add(new Language("Vietnamese", "/Icons/Vietnamese.png"));
-            AvailableLanguages.Add(new Language("Zulu", "/Icons/Afrikaans.png"));
-            SelectedLanguage = AvailableLanguages.FirstOrDefault(lang => lang.DisplayName == "English");
+            comboBoxLanguageToDisplay.ItemsSource = WeatherProphet.Language.GetAvailableLanguages();
             DataContext = this;
             comboBoxDaysToShow.Items.Clear();
-            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "1" });
-            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "2" });
-            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "3" });
-            comboBoxDaysToShow.Items.Add(new ComboBoxItem() { Content = "4" });
+            comboBoxDaysToShow.Items.Add("1");
+            comboBoxDaysToShow.Items.Add("2");
+            comboBoxDaysToShow.Items.Add("3");
+            comboBoxDaysToShow.Items.Add("4");
         }
 
         private async Task GetWeather(string city, string language)
@@ -212,7 +164,7 @@ namespace WeatherProphet
 
                 if (comboBoxDaysToShow.SelectedItem != null)
                 {
-                    int numDays = Convert.ToInt32(((ComboBoxItem)comboBoxDaysToShow.SelectedItem).Content);
+                    int numDays = Convert.ToInt32((comboBoxDaysToShow.SelectedItem));
                     var forecasts = await GetWeatherForecasts(city, numDays, langCode);
 
                     if (forecasts != null && forecasts.Count > 0)
@@ -251,9 +203,9 @@ namespace WeatherProphet
             }
         }
 
-        private void ComboBoxLanguageToDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private async void ComboBoxLanguageToDisplay_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            //SelectedLanguage = (Language)comboBoxLanguageToDisplay.SelectedItem;
+            SelectedLanguage = (Language)comboBoxLanguageToDisplay.SelectedItem;
 
             switch (SelectedLanguage.DisplayName)
             {
@@ -588,15 +540,14 @@ namespace WeatherProphet
                     break;
             }
 
-            //TranslateDisplayNames(langCode);
-        }
-        /*private void TranslateDisplayNames(string langCode)
-        {
-            foreach (var language in AvailableLanguages)
+            if (listBoxForecast.ItemsSource != null && textBlockWeather != null)
             {
-                var cultureInfo = new CultureInfo(langCode);
-                language.DisplayName = cultureInfo.NativeName;
+                string city = textBoxCity.Text;
+                int numDays = Convert.ToInt32((comboBoxDaysToShow.SelectedItem));
+                await GetWeather(city, langCode);
+                var forecasts = await GetWeatherForecasts(city, numDays, langCode);
+                listBoxForecast.ItemsSource = forecasts;
             }
-        }*/
+        }
     }
 }

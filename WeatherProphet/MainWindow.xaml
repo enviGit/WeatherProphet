@@ -16,8 +16,8 @@
     <Grid>
         <Label x:Name="labelWeatherProphet" Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center" 
                VerticalContentAlignment="Top"/>
-        <ComboBox Name="comboBoxLanguageToDisplay" VerticalAlignment="Top" ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding SelectedLanguage}" 
-                  Margin="10,62,618,0" Height="28" SelectionChanged="ComboBoxLanguageToDisplay_SelectionChanged">
+        <ComboBox Name="comboBoxLanguageToDisplay" VerticalAlignment="Top" SelectedItem="{Binding SelectedLanguage}" SelectedIndex="13" Margin="10,62,618,0" Height="28" 
+                  SelectionChanged="ComboBoxLanguageToDisplay_SelectionChanged">
             <ComboBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
@@ -47,8 +47,8 @@
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="{Binding DayOfWeek}" FontWeight="Bold" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding FormattedDate}" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Weather}" Margin="0,0,5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding FormattedDate}" Margin="0,0,25,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding Weather}" Margin="0,0,25,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding Temperature, StringFormat='{}{0:F1}°C'}" Margin="0,0,5,0" VerticalAlignment="Center"/>
                         <Image Source="{Binding ImageUrl}" Width="50" Height="50" VerticalAlignment="Center"/>
                     </StackPanel>
