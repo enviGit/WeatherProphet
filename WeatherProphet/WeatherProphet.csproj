@@ -55,6 +55,7 @@
     <None Remove="Icons\Turkish.png" />
     <None Remove="Icons\Ukrainian.png" />
     <None Remove="Icons\Vietnamese.png" />
+    <None Remove="Icons\weather.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -126,6 +127,9 @@
     <Resource Include="Icons\Turkish.png" />
     <Resource Include="Icons\Ukrainian.png" />
     <Resource Include="Icons\Vietnamese.png" />
+    <Resource Include="Icons\weather.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>

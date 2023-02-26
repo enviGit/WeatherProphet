@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WeatherProphet"
         mc:Ignorable="d"
-        Title="Weather Prophet" Height="450" Width="800" ResizeMode="CanMinimize">
+        Title="Weather Prophet" Height="450" Width="800" ResizeMode="CanMinimize" Icon="Icons/weather.png">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

@@ -55,7 +55,6 @@ namespace WeatherProphet.Models
             {"zh_tw", new[] {"星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"}},
             {"zu", new[] {"Sonto", "Mvulo", "Sibili", "Sithathu", "Sine", "Sihlanu", "Mgqibelo"}}
         };
-
         public DateTime Date { get; set; }
         public double Temperature { get; set; }
         public string Weather { get; set; }
