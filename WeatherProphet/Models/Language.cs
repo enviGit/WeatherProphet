@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WeatherProphet
+namespace WeatherProphet.Models
 {
     public class Language
     {

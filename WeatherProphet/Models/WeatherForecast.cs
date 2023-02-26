@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace WeatherProphet
+namespace WeatherProphet.Models
 {
     public class WeatherForecast
     {

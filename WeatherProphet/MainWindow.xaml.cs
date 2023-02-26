@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using WeatherProphet.Models;
 
 #nullable disable
 
@@ -76,7 +77,7 @@ namespace WeatherProphet
             IConfiguration config = new ConfigurationBuilder().AddJsonFile("appsettings.json", true, true).Build();
             apiKey = config["OpenWeatherApiKey"];
             httpClient = new HttpClient();
-            comboBoxLanguageToDisplay.ItemsSource = WeatherProphet.Language.GetAvailableLanguages();
+            comboBoxLanguageToDisplay.ItemsSource = Models.Language.GetAvailableLanguages();
             DataContext = this;
             comboBoxDaysToShow.Items.Clear();
             comboBoxDaysToShow.Items.Add("1");
