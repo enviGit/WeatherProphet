@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 #nullable disable
@@ -101,12 +102,19 @@ namespace WeatherProphet
                 string weather = weatherResult.weather[0].description;
                 double temperature = Math.Round((double)weatherResult.main.temp, 1);
                 string temperatureString = temperature.ToString("0.0", CultureInfo.InvariantCulture);
+                string iconId = weatherResult.weather[0].icon;
+                string iconUrl = $"http://openweathermap.org/img/w/{iconId}.png";
+                BitmapImage iconImage = new BitmapImage(new Uri(iconUrl));
+                imageWeather.Source = iconImage;
+                imageWeather.Visibility = Visibility.Visible;
 
                 if (weather != null && temperature != null)
-                    textBlockWeather.Text = $"{weatherPhrase} {city}: {weather}, {temperatureString}°C";
+                    textBlockWeather.Text = $"{weatherPhrase} {city}:\t{weather}, {temperatureString}°C";
+                    
             }
             catch (HttpRequestException ex)
             {
+                imageWeather.Visibility = Visibility.Collapsed;
                 textBlockWeather.Text = $"Error: {ex.Message}";
                 listBoxForecast.Visibility = Visibility.Collapsed;
             }
@@ -146,8 +154,6 @@ namespace WeatherProphet
                 }
                 catch (HttpRequestException ex)
                 {
-                    textBlockForecast.Text = $"Error: {ex.Message}";
-
                     return null;
                 }
             }
@@ -171,14 +177,9 @@ namespace WeatherProphet
                     {
                         listBoxForecast.ItemsSource = forecasts;
                         listBoxForecast.Visibility = Visibility.Visible;
-                        textBlockForecast.Visibility = Visibility.Collapsed;
                     }
                     else
-                    {
                         listBoxForecast.Visibility = Visibility.Collapsed;
-                        textBlockForecast.Text = "No forecast available.";
-                        textBlockForecast.Visibility = Visibility.Visible;
-                    }
                 }
             }
             catch (HttpRequestException ex)
@@ -186,20 +187,27 @@ namespace WeatherProphet
                 textBlockWeather.Text = $"Error: {ex.Message}";
                 listBoxForecast.Visibility = Visibility.Collapsed;
             }
+
+            LinearGradientBrush borderBrush = new LinearGradientBrush();
+            borderBrush.StartPoint = new Point(0, 0);
+            borderBrush.EndPoint = new Point(0, 1);
+            borderBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#d55c00"), 0.2));
+            borderBrush.GradientStops.Add(new GradientStop((Color)ColorConverter.ConvertFromString("#ffa632"), 1));
+            contentBorder.Background = borderBrush;
         }
         private void Button_ToggleTheme(object sender, RoutedEventArgs e)
         {
-            if (Resources.MergedDictionaries.Count > 0 && Resources.MergedDictionaries[0].Source.OriginalString == "Themes/DarkTheme.xaml")
+            if (Resources.MergedDictionaries.Count > 0 && Resources.MergedDictionaries[0].Source.OriginalString == "/Themes/DarkTheme.xaml")
             {
                 Resources.MergedDictionaries.Clear();
                 ThemeImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Icons/light.png"));
-                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/LightTheme.xaml", UriKind.Relative) });
+                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Themes/LightTheme.xaml", UriKind.Relative) });
             }
             else
             {
                 Resources.MergedDictionaries.Clear();
                 ThemeImage.ImageSource = new BitmapImage(new Uri("pack://application:,,,/Icons/dark.png"));
-                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("Themes/DarkTheme.xaml", UriKind.Relative) });
+                Resources.MergedDictionaries.Add(new ResourceDictionary { Source = new Uri("/Themes/DarkTheme.xaml", UriKind.Relative) });
             }
         }
 
@@ -545,6 +553,16 @@ namespace WeatherProphet
                 string city = textBoxCity.Text;
                 int numDays = Convert.ToInt32((comboBoxDaysToShow.SelectedItem));
                 await GetWeather(city, langCode);
+                var forecasts = await GetWeatherForecasts(city, numDays, langCode);
+                listBoxForecast.ItemsSource = forecasts;
+            }
+        }
+        private async void ComboBoxDaysToShow_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (listBoxForecast.ItemsSource != null)
+            {
+                string city = textBoxCity.Text;
+                int numDays = Convert.ToInt32((comboBoxDaysToShow.SelectedItem));
                 var forecasts = await GetWeatherForecasts(city, numDays, langCode);
                 listBoxForecast.ItemsSource = forecasts;
             }

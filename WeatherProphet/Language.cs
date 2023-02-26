@@ -15,7 +15,6 @@ namespace WeatherProphet
         public static List<Language> GetAvailableLanguages()
         {
             var languages = new List<Language>();
-
             languages.Add(new Language("Afrikaans", "/Icons/Afrikaans.png"));
             languages.Add(new Language("Albanian", "/Icons/Albanian.png"));
             languages.Add(new Language("Arabic", "/Icons/Arabic.png"));
