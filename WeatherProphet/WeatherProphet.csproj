@@ -5,6 +5,7 @@
     <TargetFramework>net6.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>Icons\weather.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -56,6 +57,10 @@
     <None Remove="Icons\Ukrainian.png" />
     <None Remove="Icons\Vietnamese.png" />
     <None Remove="Icons\weather.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Icons\weather.ico" />
   </ItemGroup>
 
   <ItemGroup>
