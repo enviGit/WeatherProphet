@@ -1,44 +1,46 @@
-# Weather Prophet
+# Weather Prophet (Reborn)
 
-Weather Prophet is a desktop application that allows users to check the current weather and the weather forecast for the next few days for a particular city.
+<img width="793" height="640" alt="weatherProphet" src="https://github.com/user-attachments/assets/8c2bb523-dcdf-4a1f-83ce-bbfe62d20644" />
 
-## Features
-- Check the current weather for a city
-- Check the weather forecast for the next few days for a city
-- View the temperature, weather conditions, and an icon for each forecast
-- Customize the number of days to show in the forecast
-- Error handling for invalid inputs and API errors
+**Weather Prophet** is a modern, responsive weather dashboard built with **.NET 10** and **WPF**. It demonstrates a clean migration from legacy code to a professional **MVVM architecture**, featuring dynamic localization, dual-theme support (Dark/Light), and secure configuration management.
 
-## Requirements
-- Windows 10 or later
-- .NET Core 3.1 or later
+## 📥 Download & Demo
 
-## Installation
-1. Download the latest release of Weather Prophet from the [releases](https://github.com/enviGit/WeatherProphet/releases) page.
-2. Extract the downloaded ZIP file to a folder on your computer.
-3. Run the WeatherProphet.exe file.
+Want to see the dashboard in action without compiling?
+You can download the latest stable executable from the releases page.
 
-## Usage
-1. Enter the name of a city in the text box at the top of the window.
-2. Click the "Get Weather" button to retrieve the current weather and the weather forecast for the next few days for that city.
-3. View the current weather information and the weather forecast in the list box below.
-4. To customize the number of days to show in the forecast, use the "Days to show" drop-down menu at the top of the window.
-5. If an error occurs, such as an invalid city name or an API error, an error message will be displayed in the text box below.
+[**👉 Download Latest Release (v1.0.0)**](https://github.com/enviGit/WeatherProphet/releases/latest)
 
-## Development
-To build and run the project locally, follow these steps:
-1. Clone the repository to your local machine.
-2. Open the solution file (WeatherProphet.sln) in Visual Studio.
-3. Build the solution.
-4. Run the project.
+---
 
-## Contributing
-Contributions are welcome! To contribute to the project, follow these steps:
-1. Fork the repository.
-2. Create a new branch for your changes.
-3. Make your changes and commit them.
-4. Push your changes to your fork.
-5. Create a pull request to merge your changes into the main repository.
+## 🚀 Key Features
 
-## License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE.md) file for more information.
+### 🎨 Modern UI & UX
+* **Dual Theme Engine:** Seamless switching between **"Deep Dark"** and **"Porcelain Light"** modes. The entire UI (borders, inputs, icons) adapts instantly.
+* **Glassmorphism:** Custom window chrome with semi-transparent backgrounds and gradient borders.
+* **Responsive Layout:** Grid-based layout that scales elegantly with window resizing.
+
+### 🏗️ Architecture (MVVM)
+* **Separation of Concerns:** Strict division between Logic (`Services`), Data (`Models`), and UI (`ViewModels`).
+* **CommunityToolkit.Mvvm:** Utilizes RelayCommands and ObservableProperties for clean, boilerplate-free code.
+* **Service Layer:** * `WeatherService`: Handles HTTP requests using `System.Net.Http.Json`.
+    * `TranslationService`: Centralized localization logic.
+
+### 🔒 Security & Performance
+* **Embedded Configuration:** The API Key is loaded from an **Embedded Resource** stream rather than a loose file in the output directory, offering basic obfuscation.
+* **Efficient Parsing:** Migrated from `Newtonsoft.Json` to the high-performance `System.Text.Json`.
+
+---
+
+## 🛠 Technical Stack
+
+* **Framework:** .NET 10 (Desktop)
+* **UI Framework:** WPF (Windows Presentation Foundation)
+* **Design Pattern:** MVVM (Model-View-ViewModel)
+* **Data Source:** OpenWeatherMap API
+* **Tools:** Visual Studio 2026, CommunityToolkit.Mvvm
+
+---
+
+## 📄 License
+This project is open-source and available under the [MIT License](LICENSE).
