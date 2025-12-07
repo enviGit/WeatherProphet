@@ -3,71 +3,213 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WeatherProphet"
+        xmlns:vm="clr-namespace:WeatherProphet.ViewModels"
         mc:Ignorable="d"
-        Title="Weather Prophet" Height="450" Width="800" ResizeMode="CanMinimize" Icon="Icons/weather.png">
+        Title="{Binding AppTitle}" 
+        Height="650" Width="800" 
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        WindowStartupLocation="CenterOwner">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" 
+                      ResizeBorderThickness="5" 
+                      CornerRadius="10" 
+                      GlassFrameThickness="0"/>
+    </WindowChrome.WindowChrome>
+
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/DarkTheme.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BoolToVis"/>
         </ResourceDictionary>
     </Window.Resources>
-    <Grid>
-        <Label x:Name="labelWeatherProphet" Content="Weather Prophet" FontWeight="Bold" FontSize="24" VerticalAlignment="Top" HorizontalContentAlignment="Center"
-               VerticalContentAlignment="Top" BorderThickness="2,0,2,2"/>
-        <ComboBox Name="comboBoxLanguageToDisplay" VerticalAlignment="Top" SelectedItem="{Binding SelectedLanguage}" SelectedIndex="13" Margin="41,85,585,0" Height="28"
-                  SelectionChanged="ComboBoxLanguageToDisplay_SelectionChanged" MaxDropDownHeight="125">
-            <ComboBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Width="16" Height="16" Margin="0,0,5,0" Source="{Binding FlagIcon}" />
-                        <TextBlock Text="{Binding DisplayName}" />
-                    </StackPanel>
-                </DataTemplate>
-            </ComboBox.ItemTemplate>
-        </ComboBox>
-        <Button Name="ToggleTheme" Click="Button_ToggleTheme" VerticalAlignment="Top" Margin="0,13,10,0" Style="{StaticResource ThemeButton}" HorizontalAlignment="Right" Width="40">
-            <Button.Background>
-                <ImageBrush x:Name="ThemeImage" ImageSource="pack://application:,,,/Icons/dark.png"/>
-            </Button.Background>
-        </Button>
-        <Label x:Name="labelCity" Content="City" HorizontalAlignment="Left" Margin="299,63,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="120" 
-               Height="27" BorderThickness="0"/>
-        <TextBox Name="textBoxCity" HorizontalAlignment="Left" Margin="299,90,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="28"/>
-        <Label x:Name="labelForecastsNumber" Content="Number of forecasts" HorizontalAlignment="Left" Margin="482,63,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" Width="118" Height="27" 
-               BorderThickness="0"/>
-        <ComboBox Name="comboBoxDaysToShow" HorizontalAlignment="Left" Margin="501,90,0,0" VerticalAlignment="Top" Width="80" Height="28" SelectedIndex="3" 
-                  SelectionChanged="ComboBoxDaysToShow_SelectionChanged" />
-        <Button Name="buttonGetWeather" Content="Get Weather" HorizontalAlignment="Left" Margin="657,85,0,0" VerticalAlignment="Top" Width="76" Click="Button_Click" Height="28"/>
-        <StackPanel x:Name="weatherStackPanel" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,135,0,0" VerticalAlignment="Top" MinHeight="50">
-            <StackPanel.Resources>
-                <Style TargetType="Border" x:Key="myBorder">
-                    <Setter Property="BorderThickness" Value="10"/>
-                    <Setter Property="Background" Value="Transparent"/>
-                    <Setter Property="CornerRadius" Value="50"/>
-                </Style>
-            </StackPanel.Resources>
-            <Border x:Name="contentBorder" Style="{StaticResource myBorder}">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Name="textBlockWeather" TextWrapping="Wrap" Text="" VerticalAlignment="Center" Margin="10,10,0,10"/>
-                    <Image x:Name="imageWeather" Height="50" Width="50"/>
+
+    <Border Background="{DynamicResource BackgroundBrush}" 
+            CornerRadius="10" 
+            BorderThickness="1" BorderBrush="{DynamicResource BorderBrush}">
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="20" ShadowDepth="5" Opacity="0.4"/>
+        </Border.Effect>
+
+        <Grid Margin="20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,20" Background="Transparent">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Border Grid.ColumnSpan="5" Background="Transparent" MouseLeftButtonDown="Window_MouseDown"/>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" IsHitTestVisible="False" Grid.Column="0">
+                    <Image Source="Icons/weather.png" Width="24" Height="24" Margin="0,0,10,0"/>
+                    <TextBlock Text="{Binding AppTitle}" FontSize="20" FontWeight="Bold" VerticalAlignment="Center"/>
                 </StackPanel>
-            </Border>
-        </StackPanel>
-        <TextBlock Name="textBlockForecast" TextWrapping="Wrap" Text="" Margin="10,222,10,174" HorizontalAlignment="Center"/>
-        <ListBox Name="listBoxForecast" Visibility="Collapsed" Margin="10,222,10,10">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="{Binding DayOfWeek}" FontWeight="Bold" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding FormattedDate}" Margin="0,0,25,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Weather}" Margin="0,0,25,0" VerticalAlignment="Center"/>
-                        <TextBlock Text="{Binding Temperature, StringFormat='{}{0:F1}°C'}" Margin="0,0,5,0" VerticalAlignment="Center"/>
-                        <Image Source="{Binding ImageUrl}" Width="50" Height="50" VerticalAlignment="Center"/>
+
+                <ComboBox Grid.Column="2" Width="160" Margin="0,0,10,0"
+                          ItemsSource="{Binding AvailableLanguages}"
+                          SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}"
+                          WindowChrome.IsHitTestVisibleInChrome="True">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Image Width="20" Height="16" Margin="0,0,10,0" Source="{Binding FlagIcon}" RenderOptions.BitmapScalingMode="HighQuality"/>
+                                <TextBlock Text="{Binding DisplayName}" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+
+                <Button Grid.Column="3" Click="Button_ToggleTheme"
+                        Width="35" Height="35" Margin="0,0,5,0"
+                        Background="Transparent"
+                        ToolTip="Change Theme"
+                        WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Path Data="{DynamicResource ThemeIconGeometry}" 
+                          Fill="{DynamicResource ForegroundBrush}" 
+                          Stretch="Uniform" 
+                          Width="18" Height="18"
+                          RenderTransformOrigin="0.5,0.5">
+                        <Path.RenderTransform>
+                            <RotateTransform Angle="0"/>
+                        </Path.RenderTransform>
+                        <Path.Triggers>
+                            <EventTrigger RoutedEvent="Loaded">
+                                <BeginStoryboard>
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetProperty="(Path.RenderTransform).(RotateTransform.Angle)" 
+                                                         From="0" To="360" Duration="0:0:1" 
+                                                         FillBehavior="Stop"/>
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Path.Triggers>
+                    </Path>
+                </Button>
+
+                <StackPanel Grid.Column="4" Orientation="Horizontal" WindowChrome.IsHitTestVisibleInChrome="True">
+                    <Button Content="-" Click="Minimize_Click" Width="35" Height="35" Margin="0,0,5,0" Background="Transparent" Foreground="{DynamicResource ForegroundBrush}" FontSize="18"/>
+                    <Button Content="✕" Click="Close_Click" Width="35" Height="35" Background="Transparent" Foreground="#FF5555" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+            </Grid>
+
+            <Border Grid.Row="1" Background="{DynamicResource ControlLightBrush}" 
+        Opacity="0.05" CornerRadius="10" Margin="-10" Panel.ZIndex="-1"/>
+
+            <Grid Grid.Row="1" Margin="0,10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <StackPanel Grid.Column="0" Margin="0,0,10,0">
+                    <TextBlock Text="{Binding CityLabel}" FontWeight="SemiBold" Margin="0,0,0,5" Opacity="0.7"/>
+                    <TextBox Text="{Binding CityName, UpdateSourceTrigger=PropertyChanged}" Height="40" FontSize="16" VerticalContentAlignment="Center"/>
+                </StackPanel>
+
+                <StackPanel Grid.Column="1" Margin="10,0,10,0">
+                    <TextBlock Text="{Binding ForecastsLabel}" FontWeight="SemiBold" Margin="0,0,0,5" Opacity="0.7"/>
+                    <ComboBox ItemsSource="{Binding DaysOptions}" 
+                              SelectedItem="{Binding SelectedDays}"
+                              Height="40" VerticalContentAlignment="Center" FontSize="16"/>
+                </StackPanel>
+
+                <Button Grid.Column="2" 
+                        Command="{Binding GetWeatherCommand}"
+                        Content="{Binding ButtonLabel}"
+                        Height="40" Width="120"
+                        VerticalAlignment="Bottom"
+                        FontWeight="Bold" Cursor="Hand"/>
+            </Grid>
+
+            <ProgressBar Grid.Row="2" IsIndeterminate="True" Height="4" 
+                         Visibility="{Binding IsLoading, Converter={StaticResource BoolToVis}}" 
+                         Margin="0,15,0,0" Foreground="{DynamicResource AccentBrush}" Background="Transparent" BorderThickness="0"/>
+
+            <TextBlock Grid.Row="2" Text="{Binding ErrorMessage}" 
+                       Foreground="#FF5555" FontWeight="Bold" HorizontalAlignment="Center"
+                       Visibility="{Binding HasError, Converter={StaticResource BoolToVis}}"
+                       Margin="0,15,0,0"/>
+
+            <Border Grid.Row="2" Margin="0,25" 
+                    Padding="30" CornerRadius="20"
+                    Background="{DynamicResource SurfaceBrush}"
+                    Visibility="{Binding CurrentWeather, Converter={StaticResource BoolToVis}, FallbackValue=Collapsed}">
+                <Border.Effect>
+                    <DropShadowEffect Color="Black" BlurRadius="15" ShadowDepth="3" Opacity="0.2"/>
+                </Border.Effect>
+
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Image Source="{Binding CurrentWeather.ImageUrl}" Width="100" Height="100" Grid.Column="0" Margin="0,0,20,0">
+                        <Image.Effect>
+                            <DropShadowEffect Color="{DynamicResource AccentBrushColor}" BlurRadius="20" ShadowDepth="0" Opacity="0.6"/>
+                        </Image.Effect>
+                    </Image>
+
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CityName}" FontSize="32" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding CurrentWeather.Weather}" FontSize="18" Opacity="0.7"/>
+                        <TextBlock Text="{Binding FormattedDate}" FontSize="14" Opacity="0.5" Margin="0,5,0,0"/>
                     </StackPanel>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
-    </Grid>
+
+                    <TextBlock Grid.Column="2" Text="{Binding CurrentWeather.Temperature, StringFormat='{}{0:F0}°'}" 
+                               FontSize="64" FontWeight="Light" 
+                               Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center"/>
+                </Grid>
+            </Border>
+
+            <ScrollViewer Grid.Row="3" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                <ListBox ItemsSource="{Binding Forecasts}" 
+                         BorderThickness="0" Background="Transparent"
+                         HorizontalContentAlignment="Stretch"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel HorizontalAlignment="Center"/>
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Width="160" Margin="5">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="{Binding DayOfWeek}" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,0,0,5"/>
+                                    <TextBlock Text="{Binding FormattedDate}" FontSize="12" Opacity="0.5" HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+                                    <Image Source="{Binding ImageUrl}" Width="60" Height="60" Margin="0,0,0,5"/>
+
+                                    <TextBlock Text="{Binding Temperature, StringFormat='{}{0:F1}°'}" 
+                                               FontSize="24" FontWeight="Bold" 
+                                               Foreground="{DynamicResource AccentBrush}"
+                                               HorizontalAlignment="Center"/>
+
+                                    <TextBlock Text="{Binding Weather}" TextWrapping="Wrap" TextAlignment="Center" FontSize="12" Opacity="0.8" Margin="0,5,0,0"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </ScrollViewer>
+
+        </Grid>
+    </Border>
 </Window>

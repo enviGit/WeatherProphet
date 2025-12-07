@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ApplicationIcon>Icons\weather.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="appsettings.json" />
     <None Remove="Icons\Afrikaans.png" />
     <None Remove="Icons\Albanian.png" />
     <None Remove="Icons\Arabic.png" />
@@ -20,7 +21,6 @@
     <None Remove="Icons\Croatian.png" />
     <None Remove="Icons\Czech.png" />
     <None Remove="Icons\Danish.png" />
-    <None Remove="Icons\dark.png" />
     <None Remove="Icons\dark2.png" />
     <None Remove="Icons\Dutch.png" />
     <None Remove="Icons\English.png" />
@@ -37,7 +37,6 @@
     <None Remove="Icons\Japanese.png" />
     <None Remove="Icons\Korean.png" />
     <None Remove="Icons\Latvian.png" />
-    <None Remove="Icons\light.png" />
     <None Remove="Icons\Lithuanian.png" />
     <None Remove="Icons\Macedonian.png" />
     <None Remove="Icons\Norwegian.png" />
@@ -64,9 +63,16 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -97,7 +103,6 @@
     <Resource Include="Icons\Croatian.png" />
     <Resource Include="Icons\Czech.png" />
     <Resource Include="Icons\Danish.png" />
-    <Resource Include="Icons\dark.png" />
     <Resource Include="Icons\Dutch.png" />
     <Resource Include="Icons\English.png" />
     <Resource Include="Icons\Finnish.png" />
@@ -113,7 +118,6 @@
     <Resource Include="Icons\Japanese.png" />
     <Resource Include="Icons\Korean.png" />
     <Resource Include="Icons\Latvian.png" />
-    <Resource Include="Icons\light.png" />
     <Resource Include="Icons\Lithuanian.png" />
     <Resource Include="Icons\Macedonian.png" />
     <Resource Include="Icons\Norwegian.png" />
@@ -135,12 +139,6 @@
     <Resource Include="Icons\weather.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
