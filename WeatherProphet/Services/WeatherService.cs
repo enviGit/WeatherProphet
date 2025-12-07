@@ -21,21 +21,25 @@ namespace WeatherProphet.Services
 
         public async Task<WeatherForecast> GetCurrentWeatherAsync(string city, string langCode)
         {
-            string url = $"http://api.openweathermap.org/data/2.5/weather?q={city}&lang={langCode}&appid={_apiKey}&units=metric";
+            string url = $"https://api.openweathermap.org/data/2.5/weather?q={city}&lang={langCode}&appid={_apiKey}&units=metric";
 
             try
             {
                 var response = await _httpClient.GetFromJsonAsync<WeatherApiResponse>(url);
-
                 if (response == null) return null;
 
                 return new WeatherForecast(
-                     DateTime.Now,
-                     response.Weather.FirstOrDefault()?.Description ?? "",
-                     response.Main.Temp,
-                     $"http://openweathermap.org/img/w/{response.Weather.FirstOrDefault()?.Icon}.png",
-                     TranslationService.GetDayOfWeek(DateTime.Now, langCode)
-                 );
+                    DateTime.Now,
+                    response.Weather.FirstOrDefault()?.Description ?? "",
+                    response.Main.Temp,
+                    $"https://openweathermap.org/img/w/{response.Weather.FirstOrDefault()?.Icon}.png",
+                    TranslationService.GetDayOfWeek(DateTime.Now, langCode),
+
+                    response.Main.FeelsLike,
+                    response.Main.Humidity,
+                    response.Wind?.Speed ?? 0,
+                    response.Main.Pressure
+                );
             }
             catch
             {
@@ -45,7 +49,7 @@ namespace WeatherProphet.Services
 
         public async Task<List<WeatherForecast>> GetForecastAsync(string city, int days, string langCode)
         {
-            string url = $"http://api.openweathermap.org/data/2.5/forecast?q={city}&lang={langCode}&appid={_apiKey}&units=metric";
+            string url = $"https://api.openweathermap.org/data/2.5/forecast?q={city}&lang={langCode}&appid={_apiKey}&units=metric";
 
             try
             {
@@ -72,8 +76,12 @@ namespace WeatherProphet.Services
                         date,
                         item.Weather.FirstOrDefault()?.Description ?? "",
                         item.Main.Temp,
-                        $"http://openweathermap.org/img/w/{item.Weather.FirstOrDefault()?.Icon}.png",
-                        dayName
+                        $"https://openweathermap.org/img/w/{item.Weather.FirstOrDefault()?.Icon}.png",
+                        dayName,
+                        item.Main.FeelsLike,
+                        item.Main.Humidity,
+                        0,
+                        item.Main.Pressure
                     ));
                 }
 

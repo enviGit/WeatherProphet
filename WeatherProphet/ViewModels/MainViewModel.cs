@@ -40,7 +40,7 @@ namespace WeatherProphet.ViewModels
         private ObservableCollection<int> _daysOptions = new() { 1, 2, 3, 4, 5 };
 
         [ObservableProperty]
-        private int _selectedDays = 3;
+        private int _selectedDays = 5;
 
         [ObservableProperty]
         private bool _isLoading;
@@ -55,6 +55,9 @@ namespace WeatherProphet.ViewModels
         [ObservableProperty] private string _cityLabel;
         [ObservableProperty] private string _buttonLabel;
         [ObservableProperty] private string _forecastsLabel;
+
+        [ObservableProperty] 
+        private bool _isWeatherLoaded;
 
         public MainViewModel()
         {
@@ -101,28 +104,33 @@ namespace WeatherProphet.ViewModels
 
             IsLoading = true;
             HasError = false;
+            IsWeatherLoaded = false;
             ErrorMessage = "";
 
             try
             {
                 string langCode = SelectedLanguage.Code;
 
-                CurrentWeather = await _weatherService.GetCurrentWeatherAsync(CityName, langCode);
+                var current = await _weatherService.GetCurrentWeatherAsync(CityName, langCode);
 
-                if (CurrentWeather == null)
+                if (current == null)
                 {
-                    ErrorMessage = "City not found.";
+                    ErrorMessage = "City not found or API Error.";
                     HasError = true;
+                    CurrentWeather = null;
                     Forecasts.Clear();
                     return;
                 }
+
+                CurrentWeather = current;
+                IsWeatherLoaded = true;
 
                 var forecastList = await _weatherService.GetForecastAsync(CityName, SelectedDays, langCode);
                 Forecasts = new ObservableCollection<WeatherForecast>(forecastList);
             }
             catch (Exception ex)
             {
-                ErrorMessage = $"Error: {ex.Message}";
+                ErrorMessage = $"Critical Error: {ex.Message}";
                 HasError = true;
             }
             finally

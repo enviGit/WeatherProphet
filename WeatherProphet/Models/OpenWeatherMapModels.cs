@@ -11,6 +11,9 @@ namespace WeatherProphet.Models
         [JsonPropertyName("main")]
         public MainData Main { get; set; }
 
+        [JsonPropertyName("wind")]
+        public WindData Wind { get; set; }
+
         [JsonPropertyName("dt")]
         public long Dt { get; set; }
 
@@ -33,9 +36,24 @@ namespace WeatherProphet.Models
         public string Icon { get; set; }
     }
 
+    public class WindData
+    {
+        [JsonPropertyName("speed")]
+        public double Speed { get; set; }
+    }
+
     public class MainData
     {
         [JsonPropertyName("temp")]
         public double Temp { get; set; }
+
+        [JsonPropertyName("feels_like")]
+        public double FeelsLike { get; set; }
+
+        [JsonPropertyName("humidity")]
+        public int Humidity { get; set; }
+
+        [JsonPropertyName("pressure")]
+        public int Pressure { get; set; }
     }
 }
