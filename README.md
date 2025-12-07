@@ -1,6 +1,6 @@
 # Weather Prophet (Reborn)
 
-<img width="793" height="640" alt="weatherProphet" src="https://github.com/user-attachments/assets/8c2bb523-dcdf-4a1f-83ce-bbfe62d20644" />
+<img width="1090" height="642" alt="weatherProphet" src="https://github.com/user-attachments/assets/954e844b-8ad9-4b9c-b590-59c7a9df621c" />
 
 **Weather Prophet** is a modern, responsive weather dashboard built with **.NET 10** and **WPF**. It demonstrates a clean migration from legacy code to a professional **MVVM architecture**, featuring dynamic localization, dual-theme support (Dark/Light), and secure configuration management.
 
