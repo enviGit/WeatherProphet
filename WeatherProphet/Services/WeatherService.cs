@@ -32,7 +32,7 @@ namespace WeatherProphet.Services
                     DateTime.Now,
                     response.Weather.FirstOrDefault()?.Description ?? "",
                     response.Main.Temp,
-                    $"https://openweathermap.org/img/w/{response.Weather.FirstOrDefault()?.Icon}.png",
+                    $"http://openweathermap.org/img/w/{response.Weather.FirstOrDefault()?.Icon}.png",
                     TranslationService.GetDayOfWeek(DateTime.Now, langCode),
 
                     response.Main.FeelsLike,
@@ -76,7 +76,7 @@ namespace WeatherProphet.Services
                         date,
                         item.Weather.FirstOrDefault()?.Description ?? "",
                         item.Main.Temp,
-                        $"https://openweathermap.org/img/w/{item.Weather.FirstOrDefault()?.Icon}.png",
+                        $"http://openweathermap.org/img/w/{item.Weather.FirstOrDefault()?.Icon}.png",
                         dayName,
                         item.Main.FeelsLike,
                         item.Main.Humidity,
